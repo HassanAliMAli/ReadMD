@@ -174,7 +174,7 @@ function App() {
       {!document ? (
         <Landing onLoadContent={handleLoadContent} onWrite={() => {
             handleLoadContent("", "Untitled");
-            setViewMode("edit");
+            setViewMode("split");
           }} />
       ) : (
         <div className="reader-layout">
