@@ -27,7 +27,7 @@ import type { Heading } from "../types";
 
 let md: MarkdownIt | null = null;
 
-const sampleDocument = `# Welcome to Ephemeral Markdown Viewer
+const sampleDocument = `# Welcome to ReadMD
 
 A privacy-first markdown viewer that runs entirely in your browser. Nothing is saved after you leave.
 
@@ -96,7 +96,7 @@ Check out [GitHub Flavored Markdown](https://github.github.com/gfm/) for more in
 
 ---
 
-*Thank you for trying Ephemeral Markdown Viewer!*
+*Thank you for trying ReadMD!*
 `;
 
 export function getSampleDocument(): string {

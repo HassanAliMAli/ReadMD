@@ -111,7 +111,7 @@ Try loading your own markdown file!`;
     <div className="landing">
       <div className="landing-content">
         <div className="landing-header">
-          <h1>Ephmeral Markdown Viewer</h1>
+          <h1>ReadMD</h1>
           <p className="tagline">
             A privacy-first markdown viewer. Nothing is saved after you leave.
           </p>
