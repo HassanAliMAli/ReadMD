@@ -17,7 +17,7 @@ export interface ReadingProgress {
   percentage: number;
 }
 
-export type ViewMode = "rendered" | "split" | "raw";
+export type ViewMode = "rendered" | "split" | "raw" | "edit";
 
 export type Theme = "light" | "dark";
 

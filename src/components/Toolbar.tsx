@@ -65,6 +65,12 @@ export const Toolbar: React.FC<ToolbarProps> = ({
         {hasDocument && (
           <div className="view-toggle">
             <button
+              className={`view-btn ${viewMode === "edit" ? "active" : ""}`}
+              onClick={() => onViewModeChange("edit")}
+            >
+              Edit
+            </button>
+            <button
               className={`view-btn ${viewMode === "raw" ? "active" : ""}`}
               onClick={() => onViewModeChange("raw")}
             >

@@ -4,6 +4,7 @@ import "./styles/prism.css";
 import { Toolbar } from "./components/Toolbar";
 import { Landing } from "./components/Landing";
 import { Reader } from "./components/Reader";
+import { Editor } from "./components/Editor";
 import { TableOfContents } from "./components/TableOfContents";
 import { SearchBar } from "./components/SearchBar";
 import { Settings } from "./components/Settings";
@@ -61,6 +62,13 @@ function App() {
     setDocument({ content, html, headings, fileName: fileName || "Document" });
     setSearchOpen(false);
   }, []);
+
+  const handleContentChange = useCallback((content: string) => {
+    if (!document) return;
+    const html = renderMarkdown(content);
+    const headings = extractHeadings(html);
+    setDocument({ content, html, headings, fileName: document.fileName });
+  }, [document]);
 
   const handleHeadingClick = useCallback((id: string) => {
     setActiveHeadingId(id);
@@ -167,7 +175,7 @@ function App() {
         <Landing onLoadContent={handleLoadContent} />
       ) : (
         <div className="reader-layout">
-          {viewMode !== "raw" && (
+          {viewMode !== "raw" && viewMode !== "edit" && viewMode !== "split" && (
             <aside className="sidebar">
               <TableOfContents
                 headings={document.headings}
@@ -178,15 +186,40 @@ function App() {
             </aside>
           )}
 
-          <Reader
-            content={document.content}
-            html={document.html}
-            viewMode={viewMode}
-            settings={settings}
-            activeHeadingId={activeHeadingId}
-            onActiveHeadingChange={setActiveHeadingId}
-            onScroll={handleScroll}
-          />
+          {viewMode === "edit" ? (
+            <Editor
+              content={document.content}
+              onChange={handleContentChange}
+              settings={settings}
+            />
+          ) : viewMode === "split" ? (
+            <div className="split-view">
+              <Editor
+                content={document.content}
+                onChange={handleContentChange}
+                settings={settings}
+              />
+              <Reader
+                content={document.content}
+                html={document.html}
+                viewMode="rendered"
+                settings={settings}
+                activeHeadingId={activeHeadingId}
+                onActiveHeadingChange={setActiveHeadingId}
+                onScroll={handleScroll}
+              />
+            </div>
+          ) : (
+            <Reader
+              content={document.content}
+              html={document.html}
+              viewMode={viewMode}
+              settings={settings}
+              activeHeadingId={activeHeadingId}
+              onActiveHeadingChange={setActiveHeadingId}
+              onScroll={handleScroll}
+            />
+          )}
         </div>
       )}
 
