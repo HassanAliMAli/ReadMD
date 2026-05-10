@@ -5,6 +5,18 @@ interface LandingProps {
   onWrite: () => void;
 }
 
+const ASCII_DECORATION = `
+  ╔══════════════════════════════════════════════════════════╗
+  ║  _   _                               __  __              ║
+  ║ | | | | _____      _____  ___  _ __  |  \\/  | ___ _ __  ║
+  ║ | |_| |/ _ \\ \\ /\\ / / _ \\/ _ \\| '_ \\ | |\\/| |/ _ \\ '_ \\ ║
+  ║ |  _  |  __/\\ V  V / (_) | (_) | | | | |  | |  __/ | | |║
+  ║ |_| |_|\\___| \\_/\\_/ \\___/ \\___/|_| |_|_|  |_|\\___|_| |_|║
+  ║                                                          ║
+  ║  M A R K D O W N   V I E W E R   &   E D I T O R         ║
+  ╚══════════════════════════════════════════════════════════╝
+`;
+
 export const Landing: React.FC<LandingProps> = ({ onLoadContent, onWrite }) => {
   const [isDragging, setIsDragging] = useState(false);
   const [showUrlInput, setShowUrlInput] = useState(false);
@@ -26,9 +38,8 @@ export const Landing: React.FC<LandingProps> = ({ onLoadContent, onWrite }) => {
     (e: React.DragEvent) => {
       e.preventDefault();
       setIsDragging(false);
-
       const files = e.dataTransfer.files;
-      if (files.length > 0 && files[0].name.endsWith(".md")) {
+      if (files.length > 0 && (files[0].name.endsWith(".md") || files[0].name.endsWith(".markdown"))) {
         const file = files[0];
         const reader = new FileReader();
         reader.onload = (event) => {
@@ -45,7 +56,7 @@ export const Landing: React.FC<LandingProps> = ({ onLoadContent, onWrite }) => {
       const files = e.target.files;
       if (files && files.length > 0) {
         const file = files[0];
-        if (file.name.endsWith(".md")) {
+        if (file.name.endsWith(".md") || file.name.endsWith(".markdown")) {
           const reader = new FileReader();
           reader.onload = (event) => {
             onLoadContent(event.target?.result as string, file.name);
@@ -70,132 +81,165 @@ export const Landing: React.FC<LandingProps> = ({ onLoadContent, onWrite }) => {
       .then((res) => res.text())
       .then((content) => onLoadContent(content, "Sample Document"))
       .catch(() => {
-        const sampleContent = `# Sample Document
+        const sampleContent = `# Welcome to ReadMD
 
-This is a sample markdown document to demonstrate the **Ephmeral Markdown Viewer**.
+A privacy-first markdown viewer.
 
 ## Features
 
-- Code highlighting
-- Math: $E = mc^2$
-- And more!
+- **Code highlighting** with Prism.js
+- **Math support** via KaTeX
+- **Diagrams** with Mermaid
+- **Live preview** in split view
+
+## Code Example
 
 \`\`\`javascript
-console.log("Hello, World!");
+const greeting = "Hello, World!";
+console.log(greeting);
 \`\`\`
 
-Try loading your own markdown file!`;
+## Math
+
+Inline: $E = mc^2$
+
+Block:
+
+$$
+\\int_0^\\infty e^{-x^2} dx = \\frac{\\sqrt{\\pi}}{2}
+$$
+
+Try it out!`;
         onLoadContent(sampleContent, "Sample Document");
       });
   }, [onLoadContent]);
 
   const handleUrlImport = useCallback(() => {
     if (!url.trim()) {
-      setUrlError("Please enter a URL");
+      setUrlError("Enter a URL");
       return;
     }
-
     setUrlError("");
     fetch(url)
       .then((res) => res.text())
       .then((content) => {
-        onLoadContent(content, new URL(url). pathname.split("/").pop() || "Imported Document");
+        onLoadContent(content, new URL(url).pathname.split("/").pop() || "Imported");
         setShowUrlInput(false);
         setUrl("");
       })
       .catch(() => {
-        setUrlError("Failed to load URL. It might be CORS blocked.");
+        setUrlError("Failed. May be CORS blocked.");
       });
   }, [url, onLoadContent]);
 
   return (
-    <div className="landing">
-      <div className="landing-content">
-        <div className="landing-header">
-          <h1>ReadMD</h1>
-          <p className="tagline">
-            A privacy-first markdown viewer. Nothing is saved after you leave.
-          </p>
-        </div>
-
-        <div className={`drop-zone ${isDragging ? "dragging" : ""}`} onDragOver={handleDragOver} onDragLeave={handleDragLeave} onDrop={handleDrop}>
-          <div className="drop-zone-content">
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-              <polyline points="14 2 14 8 20 8"></polyline>
-            </svg>
-            <p>Drag & drop a markdown file here</p>
-            <span>or</span>
-            <div className="landing-actions">
-              <button className="btn-primary" onClick={onWrite}>
-                Write
-              </button>
-              <button className="btn-secondary" onClick={() => fileInputRef.current?.click()}>
-                Upload File
-              </button>
-              <button className="btn-secondary" onClick={handlePaste}>
-                Paste
-              </button>
-              <button className="btn-secondary" onClick={() => setShowUrlInput(true)}>
-                Import URL
-              </button>
-              <button className="btn-ghost" onClick={handleLoadSample}>
-                Try Sample
-              </button>
-            </div>
+    <div className="landing-container">
+      <div className="landing-grid">
+        <div className="hero-section">
+          <pre className="ascii-art">{ASCII_DECORATION}</pre>
+          <div className="hero-content">
+            <h1 className="hero-title">
+              <span className="title-line">READ.</span>
+              <span className="title-line accent">WRITE.</span>
+              <span className="title-line">GONE.</span>
+            </h1>
+            <p className="hero-subtitle">
+              Privacy-first markdown. No accounts. No storage. 
+              <br />
+              <span className="accent-text">Your data vanishes when you close the tab.</span>
+            </p>
           </div>
         </div>
 
-        {showUrlInput && (
-          <div className="url-input-overlay" onClick={() => setShowUrlInput(false)}>
-            <div className="url-input-modal" onClick={(e) => e.stopPropagation()}>
-              <h3>Import from URL</h3>
-              <input
-                type="url"
-                placeholder="https://example.com/document.md"
-                value={url}
-                onChange={(e) => setUrl(e.target.value)}
-                onKeyDown={(e) => e.key === "Enter" && handleUrlImport()}
-                autoFocus
-              />
-              {urlError && <p className="error">{urlError}</p>}
-              <div className="url-input-actions">
-                <button className="btn-primary" onClick={handleUrlImport}>
-                  Import
-                </button>
-                <button className="btn-ghost" onClick={() => setShowUrlInput(false)}>
-                  Cancel
-                </button>
-              </div>
-            </div>
+        <div className="actions-section">
+          <div className="action-card primary" onClick={onWrite}>
+            <span className="action-icon">✎</span>
+            <span className="action-label">WRITE</span>
+            <span className="action-desc">Start fresh</span>
           </div>
-        )}
 
-        <div className="features-strip">
-          <span>✓ GFM</span>
-          <span>✓ Code</span>
-          <span>✓ Math</span>
-          <span>✓ Diagrams</span>
-          <span>✓ Search</span>
-          <span>✓ TOC</span>
+          <div 
+            className={`action-card ${isDragging ? "dragging" : ""}`}
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
+          >
+            <span className="action-icon">↓</span>
+            <span className="action-label">DROP</span>
+            <span className="action-desc">.md file here</span>
+          </div>
+
+          <div className="action-card" onClick={() => fileInputRef.current?.click()}>
+            <span className="action-icon">↑</span>
+            <span className="action-label">UPLOAD</span>
+            <span className="action-desc">Choose file</span>
+          </div>
+
+          <div className="action-card" onClick={handlePaste}>
+            <span className="action-icon">◧</span>
+            <span className="action-label">PASTE</span>
+            <span className="action-desc">From clipboard</span>
+          </div>
+
+          <div className="action-card" onClick={() => setShowUrlInput(true)}>
+            <span className="action-icon">⟶</span>
+            <span className="action-label">IMPORT</span>
+            <span className="action-desc">From URL</span>
+          </div>
+
+          <div className="action-card" onClick={handleLoadSample}>
+            <span className="action-icon">◉</span>
+            <span className="action-label">SAMPLE</span>
+            <span className="action-desc">Try demo</span>
+          </div>
         </div>
 
-        <div className="privacy-notice">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-          </svg>
-          <span>Your content is processed locally and never leaves your browser.</span>
+        <div className="features-mini">
+          <span className="feature-tag">GFM</span>
+          <span className="feature-tag">CODE</span>
+          <span className="feature-tag">MATH</span>
+          <span className="feature-tag">DIAGRAMS</span>
+          <span className="feature-tag">SPLIT</span>
+          <span className="feature-tag">SEARCH</span>
         </div>
 
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept=".md,.markdown"
-          onChange={handleFileSelect}
-          style={{ display: "none" }}
-        />
+        <div className="privacy-badge">
+          <span className="privacy-icon">◈</span>
+          <span>Client-side only. Nothing leaves your browser.</span>
+        </div>
       </div>
+
+      {showUrlInput && (
+        <div className="modal-overlay" onClick={() => setShowUrlInput(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <span className="modal-icon">⟶</span>
+              <span>IMPORT FROM URL</span>
+            </div>
+            <input
+              type="url"
+              placeholder="https://example.com/doc.md"
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && handleUrlImport()}
+              autoFocus
+            />
+            {urlError && <div className="modal-error">{urlError}</div>}
+            <div className="modal-actions">
+              <button className="modal-btn primary" onClick={handleUrlImport}>IMPORT</button>
+              <button className="modal-btn" onClick={() => setShowUrlInput(false)}>CANCEL</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept=".md,.markdown"
+        onChange={handleFileSelect}
+        style={{ display: "none" }}
+      />
     </div>
   );
 };
