@@ -172,7 +172,10 @@ function App() {
       />
 
       {!document ? (
-        <Landing onLoadContent={handleLoadContent} />
+        <Landing onLoadContent={handleLoadContent} onWrite={() => {
+            handleLoadContent("", "Untitled");
+            setViewMode("edit");
+          }} />
       ) : (
         <div className="reader-layout">
           {viewMode !== "raw" && viewMode !== "edit" && viewMode !== "split" && (

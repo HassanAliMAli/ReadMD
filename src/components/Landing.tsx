@@ -2,9 +2,10 @@ import React, { useState, useCallback, useRef } from "react";
 
 interface LandingProps {
   onLoadContent: (content: string, fileName: string | null) => void;
+  onWrite: () => void;
 }
 
-export const Landing: React.FC<LandingProps> = ({ onLoadContent }) => {
+export const Landing: React.FC<LandingProps> = ({ onLoadContent, onWrite }) => {
   const [isDragging, setIsDragging] = useState(false);
   const [showUrlInput, setShowUrlInput] = useState(false);
   const [url, setUrl] = useState("");
@@ -126,7 +127,10 @@ Try loading your own markdown file!`;
             <p>Drag & drop a markdown file here</p>
             <span>or</span>
             <div className="landing-actions">
-              <button className="btn-primary" onClick={() => fileInputRef.current?.click()}>
+              <button className="btn-primary" onClick={onWrite}>
+                Write
+              </button>
+              <button className="btn-secondary" onClick={() => fileInputRef.current?.click()}>
                 Upload File
               </button>
               <button className="btn-secondary" onClick={handlePaste}>
