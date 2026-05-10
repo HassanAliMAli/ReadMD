@@ -1,73 +1,53 @@
-# React + TypeScript + Vite
+# ReadMD
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A privacy-first markdown viewer that runs entirely in your browser. Nothing is saved after you leave.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Privacy First**: Your content stays in your browser
+- **GFM Support**: GitHub Flavored Markdown rendering
+- **Syntax Highlighting**: Code blocks with 20+ languages
+- **Math Support**: KaTeX for inline and block math
+- **Diagrams**: Mermaid.js for flowcharts, sequences, Gantt, and more
+- **Navigation**: Auto-generated TOC, search, reading progress
+- **Themes**: Light and dark mode
+- **Reading Controls**: Font size, line height, content width
+- **Export**: Print/PDF, download HTML, copy content
+- **Keyboard Shortcuts**: Ctrl+K command palette, Ctrl+F search, and more
 
-## React Compiler
+## Quick Start
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Deployment
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Deploy to Cloudflare Pages:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+1. Push to GitHub
+2. Connect repo to Cloudflare Pages
+3. Build command: `npm run build`
+4. Output directory: `dist`
+
+## Usage
+
+- **Paste**: Paste markdown directly
+- **Upload**: Drag & drop a `.md` file
+- **Import**: Load from a public URL
+- **Sample**: Try the built-in sample document
+
+## Keyboard Shortcuts
+
+| Shortcut | Action |
+|----------|--------|
+| Ctrl+K | Command palette |
+| Ctrl+F | Search document |
+| Ctrl+B | Toggle split view |
+| Ctrl+P | Print / Save as PDF |
+| Ctrl+Shift+L | Toggle theme |
+
+## License
+
+MIT
