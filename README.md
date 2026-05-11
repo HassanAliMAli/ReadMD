@@ -7,7 +7,7 @@
 
 **ReadMD** is a privacy-first, browser-based Markdown viewer built for high-fidelity reading. It provides a desktop-class documentation experience with zero server-side persistence, making it the perfect tool for viewing sensitive or complex `.md` files securely.
 
-![ReadMD Project Showcase](https://hassanali.site/images/projects/readmd.jpg)
+![ReadMD Project Showcase](readmd.jpg)
 
 ## 🚀 Key Features
 
