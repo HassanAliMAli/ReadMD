@@ -118,6 +118,12 @@ body {
   color: var(--text-primary);
 }
 
+.logo-img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
 .view-toggle {
   display: flex;
   background: var(--bg-tertiary);
@@ -169,6 +175,13 @@ body {
 .hero-section {
   text-align: center;
   width: 100%;
+}
+
+.landing-logo {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  margin-bottom: 20px;
 }
 
 .ascii-art {

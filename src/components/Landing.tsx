@@ -136,6 +136,7 @@ Try it out!`;
     <div className="landing-container">
       <div className="landing-grid">
         <div className="hero-section">
+          <img src="/readMD.png" alt="ReadMD" className="landing-logo" />
           <pre className="ascii-art">{ASCII_DECORATION}</pre>
           <div className="hero-content">
             <h1 className="hero-title">
